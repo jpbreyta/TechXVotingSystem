@@ -1,27 +1,47 @@
-// js/vote.js
 document.addEventListener('DOMContentLoaded', async () => {
+    const notyf = new Notyf({
+        duration: 4000,
+        position: { x: 'right', y: 'top' },
+        dismissible: true
+    });
+
     const boothSelect = document.getElementById('boothSelect');
     const voteForm = document.getElementById('voteForm');
-    const statusMsg = document.getElementById('statusMsg');
 
-    // 1. Load Booths dynamically
-    const { data: booths, error } = await window.supabase.from('booths').select('*').order('section_name');
+    const { data: booths } = await window.supabase.from('booths').select('*').order('section_name');
     if (booths) {
         boothSelect.innerHTML = '<option value="" disabled selected>Select Section</option>' +
             booths.map(b => `<option value="${b.id}">${b.section_name}</option>`).join('');
     }
 
-    // 2. Voting Logic
     voteForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const srCode = document.getElementById('srCode').value.trim();
         const boothId = boothSelect.value;
         const submitBtn = document.getElementById('submitBtn');
 
-        submitBtn.disabled = true;
-        submitBtn.innerText = "Checking...";
+        const srPattern = /^\d{2}-\d{5}$/;
 
-        // Step A: Check if Blacklisted (2nd Year)
+        if (!srPattern.test(srCode)) {
+            notyf.error('Invalid Format: Please use the correct SR-Code pattern (XX-XXXXX)');
+            return;
+        }
+
+        if(!boothId) {
+            notyf.error('Selection Error: Please select a valid section');
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Verifying...";
+
+        if (srCode.startsWith('24-')) {
+            notyf.error('Access Denied: Second year students are restricted from digital voting');
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Cast Vote";
+            return;
+        }
+
         const { data: isBlacklisted } = await window.supabase
             .from('blacklist_sr')
             .select('sr_code')
@@ -29,43 +49,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             .single();
 
         if (isBlacklisted) {
-            showStatus("❌ Access Denied: 2nd Year students are not allowed to vote digitally.", "text-red-500");
+            notyf.error('Access Denied: This SR-Code is in the restricted list');
             submitBtn.disabled = false;
             submitBtn.innerText = "Cast Vote";
             return;
         }
 
-        // Step B: Get IP (Optional but good for tracking)
         let ip = "unknown";
         try {
             const res = await fetch('https://api.ipify.org?format=json');
             const data = await res.json();
             ip = data.ip;
-        } catch (e) { console.log("IP fetch failed"); }
+        } catch (err) {}
 
-        // Step C: Submit Vote
         const { error: voteError } = await window.supabase
             .from('votes')
             .insert([{ sr_code: srCode, booth_id: boothId, ip_address: ip }]);
 
         if (voteError) {
             if (voteError.code === '23505') {
-                showStatus("❌ This SR-Code has already voted.", "text-yellow-500");
+                notyf.error('Validation Error: This SR-Code has already been used');
             } else {
-                showStatus("❌ Error casting vote. Please try again.", "text-red-500");
+                notyf.error('System Error: Unable to process transaction');
             }
         } else {
-            showStatus("✅ Vote casted successfully! Redirecting...", "text-green-500");
+            notyf.success('Success: Your vote has been recorded');
             setTimeout(() => window.location.href = 'scores.html', 2000);
         }
 
         submitBtn.disabled = false;
         submitBtn.innerText = "Cast Vote";
     });
-
-    function showStatus(msg, colorClass) {
-        statusMsg.innerText = msg;
-        statusMsg.className = `mt-6 text-center text-sm ${colorClass}`;
-        statusMsg.classList.remove('hidden');
-    }
 });
