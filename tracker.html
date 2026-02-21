@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech X | Sticker Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+</head>
+<body class="bg-slate-950 text-white p-4 md:p-10">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-black uppercase tracking-tighter mb-8">Sticker <span class="text-yellow-500">Inventory</span></h1>
+        <div id="stickerList" class="grid gap-4"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/database.js"></script>
+    <script src="js/tracker.js"></script>
+</body>
+</html>
