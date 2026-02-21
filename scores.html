@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech X | Live Scores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white min-h-screen p-6 font-sans">
+    <div class="max-w-5xl mx-auto">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-4xl font-extrabold text-blue-500 tracking-tight">TECH X LEADERBOARD</h1>
+                <p class="text-slate-400 mt-1 text-lg italic">"Highest Vote = 50% Benchmark Score"</p>
+            </div>
+            <div class="bg-slate-800 px-4 py-2 rounded-full border border-slate-700 text-sm">
+                Live Updates <span class="inline-block w-2 h-2 bg-green-500 rounded-full ml-2 animate-pulse"></span>
+            </div>
+        </header>
+
+        <div id="leaderboardGrid" class="grid gap-6">
+            <p class="text-center text-slate-500 animate-pulse">Synchronizing with database...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/database.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

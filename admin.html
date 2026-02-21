@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech X | Admin Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Custom scrollbar para sa Booth List */
+        #boothList::-webkit-scrollbar { width: 5px; }
+        #boothList::-webkit-scrollbar-track { background: #0f172a; }
+        #boothList::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen p-4 md:p-8">
+    
+    <div id="loginSection" class="max-w-md mx-auto mt-20 bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-2xl">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-blue-500">ADMIN ACCESS</h2>
+            <p class="text-slate-400 text-sm">Tech X 2026 Security Portal</p>
+        </div>
+        <div class="space-y-4">
+            <input type="email" id="adminEmail" placeholder="Admin Email" 
+                class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition">
+            <input type="password" id="adminPass" placeholder="Password" 
+                class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition">
+            <button id="loginBtn" class="w-full bg-blue-600 py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg shadow-blue-900/20 active:scale-95 transition-all">
+                Authenticate
+            </button>
+        </div>
+    </div>
+
+    <div id="adminPanel" class="hidden max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+            <div>
+                <h1 class="text-4xl font-black text-white tracking-tighter">TECH X <span class="text-blue-500">ADMIN</span></h1>
+                <p id="adminStatus" class="text-slate-400 text-sm font-mono"></p>
+            </div>
+            <button id="logoutBtn" class="px-6 py-2 bg-slate-800 hover:bg-red-900/30 text-red-400 rounded-full border border-red-900/50 transition">
+                Logout Session
+            </button>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-green-500 rounded-full"></span> Manage Sections
+                </h3>
+                <div class="flex gap-2 mb-6">
+                    <input type="text" id="newBoothName" placeholder="Section Name (e.g. 2201)" 
+                        class="flex-1 p-3 rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-green-600 outline-none transition">
+                    <button id="addBoothBtn" class="bg-green-600 px-6 rounded-lg font-bold hover:bg-green-700 active:scale-90 transition">+</button>
+                </div>
+                <div class="text-xs text-slate-500 mb-2 uppercase font-bold tracking-widest">Active Booths</div>
+                <ul id="boothList" class="space-y-2 max-h-80 overflow-y-auto pr-2">
+                    </ul>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-red-500">
+                    <span class="w-2 h-6 bg-red-500 rounded-full"></span> Blacklist (2nd Years)
+                </h3>
+                <p class="text-slate-400 text-xs mb-4 italic">Paste SR-Codes separated by lines. These users will be blocked from digital voting.</p>
+                <textarea id="blacklistInput" placeholder="23-12345&#10;23-67890" 
+                    class="w-full h-48 p-4 rounded-xl bg-slate-800 border border-slate-700 text-sm font-mono mb-4 focus:ring-2 focus:ring-red-600 outline-none transition"></textarea>
+                <button id="uploadBlacklistBtn" class="w-full bg-slate-100 text-slate-900 py-3 rounded-lg font-black hover:bg-white active:scale-95 transition-all shadow-lg">
+                    UPDATE BLACKLIST
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/database.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
