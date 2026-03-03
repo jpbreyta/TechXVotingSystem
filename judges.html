@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech X | Official Judging Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen font-sans no-scrollbar">
+
+<nav class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 p-4">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+        <!-- Left: Logo + Title -->
+        <div class="flex items-center gap-3">
+            <img src="imgs/colored_logo.png" alt="Tech X Logo" class="w-10 h-10 object-contain">
+            <div>
+                <h1 class="text-xl font-black tracking-tighter text-blue-500 uppercase">
+                    Judge<span class="text-white">Portal</span>
+                </h1>
+                <p class="text-[9px] text-slate-500 uppercase font-bold tracking-[0.2em]">
+                    Official Scoring System
+                </p>
+            </div>
+        </div>
+
+        <!-- Right: Judge Info -->
+        <div id="judgeInfo" class="text-right hidden">
+            <p id="judgeDisplay" class="text-xs font-bold text-slate-300"></p>
+            <button onclick="logout()" class="text-[10px] text-red-500 font-bold uppercase hover:underline">Exit Session</button>
+        </div>
+    </div>
+</nav>
+
+    <main id="mainContent" class="max-w-4xl mx-auto p-4 pb-20 hidden">
+        <div class="mb-8">
+            <input type="text" id="boothSearch" placeholder="Search section or booth..." 
+                autocomplete="off"
+                class="w-full p-4 rounded-2xl bg-slate-900 border border-slate-800 focus:ring-2 focus:ring-blue-600 outline-none transition text-sm">
+        </div>
+
+        <div id="judgingGrid" class="grid gap-6">
+            </div>
+    </main>
+
+    <div id="loginOverlay" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center p-6">
+        <div class="max-w-sm w-full bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl">
+            <div class="text-center mb-8">
+                <div class="inline-block p-4 rounded-2xl bg-blue-600/10 mb-4">
+                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04M12 21.314l-8.485-8.485A9.875 9.875 0 0112 3.102a9.875 9.875 0 018.485 9.727L12 21.314z" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-black uppercase tracking-tight">Access Key</h2>
+                <p class="text-slate-500 text-xs">Enter your judge credentials to proceed</p>
+            </div>
+            
+            <div class="space-y-4">
+                <input type="text" id="inputJudgeName" placeholder="Your Registered Name" 
+                    class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 text-center focus:ring-2 focus:ring-blue-600 outline-none transition">
+                <input type="password" id="inputJudgeCode" placeholder="Access Code" 
+                    class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 text-center text-xl font-mono tracking-[0.3em] focus:ring-2 focus:ring-blue-600 outline-none transition">
+                <button onclick="verifyJudge()" class="w-full bg-blue-600 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-blue-700 transition-all active:scale-95 shadow-lg shadow-blue-900/20">
+                    Verify Identity
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/database.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/judges.js"></script>
+</body>
+</html>

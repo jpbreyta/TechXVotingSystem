@@ -21,284 +21,414 @@
         background: #334155;
         border-radius: 10px;
       }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      main {
+        flex: 1;
+      }
     </style>
   </head>
-  <body class="bg-slate-950 text-white min-h-screen p-4 md:p-8">
-    <div
-      id="loginSection"
-      class="max-w-md mx-auto mt-20 bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-2xl"
-    >
-      <div class="text-center mb-8">
-        <h2
-          class="text-3xl font-extrabold text-blue-500 uppercase tracking-widest"
-        >
-          Administrator
-        </h2>
-        <p class="text-slate-400 text-sm">Secure Authentication Portal</p>
-      </div>
-      <div class="space-y-4">
-        <input
-          type="email"
-          id="adminEmail"
-          placeholder="Authorized Email"
-          class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition"
-        />
-        <input
-          type="password"
-          id="adminPass"
-          placeholder="Access Key"
-          class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition"
-        />
-        <button
-          id="loginBtn"
-          class="w-full bg-blue-600 py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg shadow-blue-900/20 active:scale-95 transition-all"
-        >
-          AUTHENTICATE
-        </button>
-      </div>
-    </div>
-
-    <div id="adminPanel" class="hidden max-w-6xl mx-auto">
+  <body class="bg-slate-950 text-white min-h-screen p-4 md:p-8 font-sans">
+    <main class="p-4 md:p-8">
       <div
-        class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4"
+        id="loginSection"
+        class="max-w-md mx-auto mt-20 bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-2xl"
       >
-        <div>
-          <h1 class="text-4xl font-black text-white tracking-tighter uppercase">
-            System <span class="text-blue-500">Overview</span>
-          </h1>
-          <p id="adminStatus" class="text-slate-400 text-sm font-mono"></p>
-        </div>
-        <button
-          id="logoutBtn"
-          class="px-6 py-2 bg-slate-800 hover:bg-red-900/30 text-red-400 rounded-full border border-red-900/50 transition font-bold text-xs uppercase tracking-widest"
-        >
-          Terminate Session
-        </button>
-      </div>
-
-      <div class="flex border-b border-slate-800 mb-8 gap-8">
-        <button
-          onclick="switchTab('analytics')"
-          class="tab-btn pb-4 text-blue-500 border-b-2 border-blue-500 font-bold uppercase text-xs tracking-widest"
-          id="tab-analytics"
-        >
-          Data Analytics
-        </button>
-        <button
-          onclick="switchTab('manage')"
-          class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-xs tracking-widest"
-          id="tab-manage"
-        >
-          System Control
-        </button>
-        <button
-          onclick="switchTab('tabulate')"
-          class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-xs tracking-widest"
-          id="tab-tabulate"
-        >
-          Tabulations
-        </button>
-      </div>
-
-      <div id="content-analytics" class="tab-content">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
-            <p
-              class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
-            >
-              Aggregate Digital Votes
-            </p>
-            <h2 id="totalVotesStat" class="text-4xl font-black text-white">
-              0
-            </h2>
-          </div>
-          <div
-            class="bg-slate-900 p-6 rounded-xl border border-slate-800 border-l-4 border-l-blue-500"
+        <div class="text-center mb-8">
+          <h2
+            class="text-3xl font-extrabold text-blue-500 uppercase tracking-widest"
           >
-            <p
-              class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
-            >
-              Leading Participant
-            </p>
-            <h2
-              id="leadingSectionStat"
-              class="text-4xl font-black text-blue-500"
-            >
-              --
-            </h2>
+            Administrator
+          </h2>
+          <p class="text-slate-400 text-sm">Secure Authentication Portal</p>
+        </div>
+        <div class="space-y-4">
+          <input
+            type="email"
+            id="adminEmail"
+            placeholder="Authorized Email"
+            class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition"
+          />
+          <input
+            type="password"
+            id="adminPass"
+            placeholder="Access Key"
+            class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition"
+          />
+          <button
+            id="loginBtn"
+            class="w-full bg-blue-600 py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg active:scale-95 transition-all"
+          >
+            AUTHENTICATE
+          </button>
+        </div>
+      </div>
+
+      <div id="adminPanel" class="hidden max-w-6xl mx-auto">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4"
+        >
+          <div class="flex items-center gap-4">
+            <img
+              src="imgs/colored_logo.png"
+              alt="Tech X Logo"
+              class="w-12 h-12 object-contain"
+            />
+            <div>
+              <h1
+                class="text-4xl font-black text-white tracking-tighter uppercase"
+              >
+                System <span class="text-blue-500">Overview</span>
+              </h1>
+              <p id="adminStatus" class="text-slate-400 text-sm font-mono"></p>
+            </div>
           </div>
-          <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
-            <p
-              class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
-            >
-              System Audit Entries
-            </p>
-            <h2
-              id="auditEntriesStat"
-              class="text-4xl font-black text-slate-500"
-            >
-              0
-            </h2>
-          </div>
+          <button
+            id="logoutBtn"
+            class="px-6 py-2 bg-slate-800 hover:bg-red-900/30 text-red-400 rounded-full border border-red-900/50 transition font-bold text-xs uppercase tracking-widest"
+          >
+            Terminate Session
+          </button>
         </div>
 
         <div
-          class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl"
+          class="flex border-b border-slate-800 mb-8 gap-6 overflow-x-auto no-scrollbar"
         >
-          <div
-            class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50"
+          <button
+            onclick="switchTab('analytics')"
+            id="tab-analytics"
+            class="tab-btn pb-4 text-blue-500 border-b-2 border-blue-500 font-bold uppercase text-[10px] tracking-widest whitespace-nowrap"
           >
-            <h3
-              class="font-bold text-lg uppercase tracking-tight flex items-center gap-2"
-            >
-              <span class="w-1.5 h-5 bg-blue-500 rounded-full"></span> Voting
-              Audit Logs
-            </h3>
-          </div>
-          <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
-            <table class="w-full text-left border-collapse">
-              <thead
-                class="bg-slate-950 text-slate-500 text-[10px] uppercase sticky top-0 font-bold"
+            Data Analytics
+          </button>
+          <button
+            onclick="switchTab('manage')"
+            id="tab-manage"
+            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
+          >
+            System Control
+          </button>
+          <button
+            onclick="switchTab('judges')"
+            id="tab-judges"
+            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
+          >
+            Official Judges
+          </button>
+          <button
+            onclick="switchTab('merit')"
+            id="tab-merit"
+            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
+          >
+            Star Merit Entry
+          </button>
+          <button
+            onclick="switchTab('tabulate')"
+            id="tab-tabulate"
+            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
+          >
+            Final Tabulations
+          </button>
+        </div>
+
+        <div id="content-analytics" class="tab-content">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+              <p
+                class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
               >
-                <tr>
-                  <th class="p-4">SR-Identifier</th>
-                  <th class="p-4">Assigned Section</th>
-                  <th class="p-4">Verification Timestamp</th>
-                  <th class="p-4">Network Origin</th>
-                </tr>
-              </thead>
-              <tbody
-                id="auditLogBody"
-                class="text-sm divide-y divide-slate-800 font-medium"
-              ></tbody>
-            </table>
+                Aggregate Digital Votes
+              </p>
+              <h2 id="totalVotesStat" class="text-4xl font-black text-white">
+                0
+              </h2>
+            </div>
+            <div
+              class="bg-slate-900 p-6 rounded-xl border border-slate-800 border-l-4 border-l-blue-500"
+            >
+              <p
+                class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
+              >
+                Leading Participant
+              </p>
+              <h2
+                id="leadingSectionStat"
+                class="text-4xl font-black text-blue-500"
+              >
+                --
+              </h2>
+            </div>
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+              <p
+                class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
+              >
+                System Audit Entries
+              </p>
+              <h2
+                id="auditEntriesStat"
+                class="text-4xl font-black text-slate-500"
+              >
+                0
+              </h2>
+            </div>
+          </div>
+
+          <div
+            class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl"
+          >
+            <div class="p-4 border-b border-slate-800 bg-slate-900/50">
+              <h3
+                class="text-xs font-bold uppercase tracking-widest text-slate-400"
+              >
+                Live Audit Log
+              </h3>
+            </div>
+            <div class="overflow-x-auto max-h-96">
+              <table class="w-full text-left border-collapse">
+                <thead
+                  class="bg-slate-950 text-slate-500 text-[10px] uppercase font-bold sticky top-0"
+                >
+                  <tr>
+                    <th class="p-4">SR-Code</th>
+                    <th class="p-4">Section</th>
+                    <th class="p-4">Timestamp</th>
+                    <th class="p-4">Network ID</th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="auditLogBody"
+                  class="text-xs divide-y divide-slate-800"
+                ></tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="content-manage" class="tab-content hidden">
-        <div class="grid lg:grid-cols-2 gap-8">
-          <div
-            class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl"
-          >
-            <h3
-              class="text-lg font-bold mb-6 flex items-center gap-2 uppercase tracking-tight"
+        <div id="content-manage" class="tab-content hidden">
+          <div class="grid lg:grid-cols-2 gap-8">
+            <div
+              class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl"
             >
-              <span class="w-1.5 h-5 bg-green-500 rounded-full"></span> Section
-              Management
-            </h3>
-            <div class="flex gap-2 mb-6">
-              <input
-                type="text"
-                id="newBoothName"
-                placeholder="Section Identifier (e.g. 2201)"
-                class="flex-1 p-3 rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-green-600 outline-none transition text-white text-sm"
-              />
-              <button
-                id="addBoothBtn"
-                class="bg-green-600 px-6 rounded-lg font-bold hover:bg-green-700 active:scale-90 transition"
+              <h3
+                class="text-lg font-bold mb-6 flex items-center gap-2 uppercase tracking-tight"
               >
-                ADD
+                <span class="w-1.5 h-5 bg-green-500 rounded-full"></span>
+                Section Management
+              </h3>
+              <div class="flex gap-2 mb-6">
+                <input
+                  type="text"
+                  id="newBoothName"
+                  placeholder="Section Identifier (e.g. 2201)"
+                  class="flex-1 p-3 rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-green-600 outline-none transition text-white text-sm"
+                />
+                <button
+                  id="addBoothBtn"
+                  class="bg-green-600 px-6 rounded-lg font-bold hover:bg-green-700 active:scale-90 transition"
+                >
+                  ADD
+                </button>
+              </div>
+              <div
+                class="text-[10px] text-slate-500 mb-2 uppercase font-bold tracking-widest"
+              >
+                Registered Sections
+              </div>
+              <ul
+                id="boothList"
+                class="space-y-2 max-h-80 overflow-y-auto pr-2"
+              ></ul>
+            </div>
+
+            <div
+              class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl"
+            >
+              <h3
+                class="text-lg font-bold mb-6 flex items-center gap-2 text-red-500 uppercase tracking-tight"
+              >
+                <span class="w-1.5 h-5 bg-red-500 rounded-full"></span> Access
+                Restriction
+              </h3>
+              <p
+                class="text-slate-500 text-[10px] mb-4 font-bold uppercase italic"
+              >
+                Note: 2nd Year (24-) prefixes are automatically restricted.
+              </p>
+              <textarea
+                id="blacklistInput"
+                placeholder="Enter specific SR-Codes to restrict (one per line)"
+                class="w-full h-40 p-4 rounded-xl bg-slate-800 border border-slate-700 text-sm font-mono mb-4 focus:ring-2 focus:ring-red-600 outline-none transition text-white"
+              ></textarea>
+              <button
+                id="uploadBlacklistBtn"
+                class="w-full bg-slate-100 text-slate-900 py-3 rounded-lg font-black hover:bg-white active:scale-95 transition-all shadow-lg uppercase text-xs tracking-widest"
+              >
+                Synchronize Restrictions
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-judges" class="tab-content hidden">
+          <div class="max-w-2xl mx-auto">
+            <div
+              class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl"
+            >
+              <div class="flex items-center gap-4 mb-8">
+                <div class="p-3 bg-blue-600/20 rounded-2xl">
+                  <svg
+                    class="w-6 h-6 text-blue-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-black uppercase tracking-tight">
+                    Judge Panel
+                  </h3>
+                  <p class="text-slate-500 text-xs font-bold uppercase">
+                    Manage official event evaluators
+                  </p>
+                </div>
+              </div>
+
+              <div class="grid gap-4 mb-8">
+                <input
+                  type="text"
+                  id="newJudgeName"
+                  placeholder="Judge Full Name (e.g. Dr. Smith)"
+                  class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-blue-600 outline-none transition text-sm"
+                />
+                <input
+                  type="text"
+                  id="newJudgeCode"
+                  placeholder="Secret Access Code (Officer's Only)"
+                  class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-blue-600 outline-none transition text-sm font-mono"
+                />
+                <button
+                  onclick="addJudge()"
+                  class="w-full bg-blue-600 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-blue-700 transition shadow-lg shadow-blue-900/20"
+                >
+                  Register Judge
+                </button>
+              </div>
+
+              <div class="space-y-3">
+                <p
+                  class="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1"
+                >
+                  Active Credentials
+                </p>
+                <ul
+                  id="judgeList"
+                  class="space-y-2 max-h-80 overflow-y-auto pr-2"
+                ></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-merit" class="tab-content hidden">
+          <div
+            class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden"
+          >
+            <div
+              class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50"
+            >
+              <h3
+                class="font-bold text-lg uppercase tracking-tight flex items-center gap-2"
+              >
+                <span class="w-1.5 h-5 bg-yellow-500 rounded-full"></span> Booth
+                Merit (Stickers)
+              </h3>
+              <button
+                onclick="saveMeritScores()"
+                class="bg-yellow-600 px-6 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg shadow-yellow-900/20"
+              >
+                Commit Star Data
               </button>
             </div>
             <div
-              class="text-[10px] text-slate-500 mb-2 uppercase font-bold tracking-widest"
-            >
-              Registered Sections
-            </div>
-            <ul
-              id="boothList"
-              class="space-y-2 max-h-80 overflow-y-auto pr-2"
-            ></ul>
-          </div>
-
-          <div
-            class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl"
-          >
-            <h3
-              class="text-lg font-bold mb-6 flex items-center gap-2 text-red-500 uppercase tracking-tight"
-            >
-              <span class="w-1.5 h-5 bg-red-500 rounded-full"></span> Access
-              Restriction
-            </h3>
-            <p
-              class="text-slate-500 text-[10px] mb-4 font-bold uppercase italic"
-            >
-              Note: 2nd Year (24-) prefixes are automatically restricted by the
-              system.
-            </p>
-            <textarea
-              id="blacklistInput"
-              placeholder="Enter specific SR-Codes to restrict (one per line)"
-              class="w-full h-40 p-4 rounded-xl bg-slate-800 border border-slate-700 text-sm font-mono mb-4 focus:ring-2 focus:ring-red-600 outline-none transition text-white"
-            ></textarea>
-            <button
-              id="uploadBlacklistBtn"
-              class="w-full bg-slate-100 text-slate-900 py-3 rounded-lg font-black hover:bg-white active:scale-95 transition-all shadow-lg uppercase text-xs tracking-widest"
-            >
-              Synchronize Restrictions
-            </button>
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6"
+              id="meritGrid"
+            ></div>
           </div>
         </div>
-      </div>
 
-      <div id="content-tabulate" class="tab-content hidden">
-        <div
-          class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl"
-        >
+        <div id="content-tabulate" class="tab-content hidden">
           <div
-            class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50"
+            class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl"
           >
-            <h3
-              class="font-bold text-lg uppercase tracking-tight flex items-center gap-2"
+            <div
+              class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50"
             >
-              <span class="w-1.5 h-5 bg-yellow-500 rounded-full"></span>
-              Executive Tabulation Matrix
-            </h3>
-            <div class="flex gap-2">
+              <h3
+                class="font-bold text-lg uppercase tracking-tight flex items-center gap-2"
+              >
+                <span class="w-1.5 h-5 bg-blue-500 rounded-full"></span>
+                Executive Tabulation
+              </h3>
               <button
                 onclick="saveJudgeScores()"
-                class="bg-green-600 px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest hover:bg-green-700 transition"
+                class="bg-blue-600 px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition"
               >
-                Commit Judge Scores
-              </button>
-              <button
-                onclick="loadTabulation()"
-                class="bg-slate-700 px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest hover:bg-slate-600 transition"
-              >
-                Sync Data
+                Update Judge Scores
               </button>
             </div>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead
-                class="bg-slate-950 text-slate-500 text-[10px] uppercase font-bold"
-              >
-                <tr>
-                  <th class="p-4">Section Identifier</th>
-                  <th class="p-4 text-center">Judges (40%)</th>
-                  <th class="p-4 text-center">Stickers (10%)</th>
-                  <th class="p-4 text-center">Digital (50%)</th>
-                  <th class="p-4 text-center bg-blue-900/20 text-blue-400">
-                    Grand Total
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                id="tabulationBody"
-                class="text-sm divide-y divide-slate-800"
-              ></tbody>
-            </table>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead
+                  class="bg-slate-950 text-slate-500 text-[10px] uppercase font-bold"
+                >
+                  <tr>
+                    <th class="p-4">Section Identifier</th>
+                    <th class="p-4 text-center">Judges (40%)</th>
+                    <th class="p-4 text-center">Stickers (10%)</th>
+                    <th class="p-4 text-center">Digital (50%)</th>
+                    <th class="p-4 text-center bg-blue-900/20">Grand Total</th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="tabulationBody"
+                  class="text-sm divide-y divide-slate-800"
+                ></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
+
+<footer class="fixed bottom-0 left-0 w-full bg-slate-950/80 backdrop-blur-md border-t border-slate-900 py-4 flex flex-col items-center justify-center z-50">
+  <img
+    src="imgs/logo_with_name_side.png"
+    alt="Tech X Logo"
+    class="h-10 opacity-50 hover:opacity-100 transition object-contain"
+  />
+</footer>
 
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/database.js"></script>
     <script src="js/admin.js"></script>
-    <script src="js/security.js"></script>
+    <script src="js/loader.js"></script>
   </body>
 </html>

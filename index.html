@@ -1,43 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tech X | Official Voting Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-</head>
-<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700">
-        <h1 class="text-3xl font-black text-blue-500 mb-2 text-center tracking-tighter uppercase">TECH X 2026</h1>
-        <p class="text-slate-400 text-center mb-8 text-xs uppercase tracking-widest font-bold">Official Digital Voting Portal</p>
-
-        <form id="voteForm" class="space-y-6">
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Student Identifier (SR-Code)</label>
-                <input type="text" id="srCode" placeholder="e.g. 23-12345" required
-                    class="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition font-mono">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" />
+    <style>
+      .logo-glow {
+        filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+      }
+      .booth-option.selected {
+        border-color: #3b82f6 !important;
+        background-color: rgba(59, 130, 246, 0.2) !important;
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        transform: scale(0.98);
+      }
+      /* Eto yung magic para mag-auto fit sila sa static height */
+      #boothSelect {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-auto-rows: 1fr; /* Pantay-pantay ang height */
+        align-content: stretch;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        filter: grayscale(1);
+      }
+    </style>
+  </head>
+  <body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-5xl w-full flex flex-col gap-4">
+      
+      <div class="bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
+        <form id="voteForm" class="flex flex-col md:flex-row min-h-[600px]">
+          
+          <div class="w-full md:w-4/12 p-8 border-b md:border-b-0 md:border-r border-slate-700 flex flex-col">
+            <div class="flex flex-col items-center mb-10">
+              <img src="imgs/colored_logo.png" alt="TechIS Logo" class="h-24 w-auto mb-4 logo-glow" />
+              <h1 class="text-2xl font-black text-blue-500 tracking-tighter uppercase">TECH X 2026</h1>
+              <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Digital Voting Portal</p>
             </div>
 
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Target Section / Booth</label>
-                <select id="boothSelect" required
-                    class="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 focus:border-blue-500 outline-none transition">
-                    <option value="" disabled selected>Retrieving data...</option>
-                </select>
+            <div class="space-y-6">
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Student Identifier (SR-Code)</label>
+                <input type="text" id="srCode" placeholder="e.g. 23-12345" required
+                  class="w-full px-4 py-4 rounded-xl bg-slate-700 border border-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition font-mono text-white text-lg" />
+              </div>
+              <input type="hidden" id="boothValue" required />
+            </div>
+
+            <div class="mt-auto pt-8 flex justify-center">
+              <img src="imgs/logo_with_name_side.png" alt="School Logo" class="h-10 opacity-30 select-none" />
+            </div>
+          </div>
+
+          <div class="w-full md:w-8/12 p-8 bg-slate-800/50 flex flex-col h-[600px]">
+            <div class="mb-4">
+              <h2 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Select Target Section</h2>
+              <p id="pickerStatus" class="text-[10px] text-slate-500 italic">Auto-adjusting selection grid</p>
+            </div>
+
+            <div id="boothSelect" class="gap-3 mb-6 flex-grow overflow-hidden">
+              <div class="col-span-full py-20 text-center text-slate-500 text-xs animate-pulse">
+                Building voting grid...
+              </div>
             </div>
 
             <button type="submit" id="submitBtn"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-lg transition duration-300 shadow-lg shadow-blue-900/20 uppercase tracking-widest text-sm">
-                Cast Official Vote
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-2xl transition duration-300 shadow-xl shadow-blue-900/30 uppercase tracking-[0.2em] text-sm active:scale-[0.98] transform">
+              Cast Official Vote
             </button>
+          </div>
         </form>
+      </div>
 
-        <div class="mt-8 pt-6 border-t border-slate-700 text-center">
-            <a href="scores.html" class="text-blue-400 hover:text-blue-300 text-xs font-bold uppercase tracking-widest transition">
-                View Live Analytics →
-            </a>
-        </div>
+      <a href="scores.html" class="group flex items-center justify-center gap-3 w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-blue-400 font-bold py-4 rounded-2xl transition-all duration-300 uppercase tracking-widest text-xs shadow-lg">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+        </span>
+        View Live Analytics
+        <span class="group-hover:translate-x-1 transition-transform">→</span>
+      </a>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
@@ -45,5 +93,6 @@
     <script src="js/database.js"></script>
     <script src="js/vote.js"></script>
     <script src="js/security.js"></script>
-</body>
+    <script src="js/loader.js"></script>
+  </body>
 </html>

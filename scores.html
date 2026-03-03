@@ -5,38 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech X | Analytics Leaderboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .progress-glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+        .rank-gold { background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%); }
+        .rank-silver { background: linear-gradient(135deg, #c0c0c0 0%, #708090 100%); }
+        .rank-bronze { background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%); }
+        
+        #leaderboardGrid {
+            display: grid;
+            /* Auto-fit boxes para swabe ang spacing */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+    </style>
 </head>
 <body class="bg-slate-950 text-white min-h-screen p-6 font-sans">
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-6xl mx-auto">
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
             <div>
                 <h1 class="text-4xl font-black text-white tracking-tighter uppercase">
                     Tech X <span class="text-blue-500">Analytics</span>
                 </h1>
-                <p class="text-slate-500 mt-1 text-sm font-bold uppercase tracking-widest">
-                    Criterion: Peak Aggregate equals 50% Benchmark
+                <p class="text-slate-500 mt-1 text-[10px] font-bold uppercase tracking-[0.2em]">
+                    Weighted: 40% Judges | 10% Stickers | 50% Digital
                 </p>
             </div>
-            <div class="bg-slate-900 px-5 py-2 rounded-lg border border-slate-800 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3">
-                Real-time Synchronization 
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
+            <div class="flex flex-col items-end gap-2">
+                <div class="bg-slate-900 px-5 py-2 rounded-lg border border-slate-800 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3">
+                    Real-time Matrix
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                </div>
+                <a href="index.html" class="text-slate-600 hover:text-blue-400 text-[9px] uppercase font-bold transition tracking-widest">← Return to Voting</a>
             </div>
         </header>
 
-        <div id="leaderboardGrid" class="grid gap-4">
-            <div class="flex flex-col items-center justify-center py-20">
-                <div class="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mb-4"></div>
-                <p class="text-slate-500 text-xs font-bold uppercase tracking-[0.2em]">Establishing Database Connection</p>
+        <div id="leaderboardGrid">
+            <div class="col-span-full flex flex-col items-center justify-center py-20 bg-slate-900/30 rounded-3xl border border-dashed border-slate-800">
+                <div class="w-10 h-10 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+                <p class="text-slate-600 text-[10px] font-bold uppercase tracking-widest">Compiling Data Streams...</p>
             </div>
         </div>
+
+        <footer class="mt-12 pt-8 border-t border-slate-900 flex justify-between items-center opacity-30">
+            <img src="imgs/logo_with_name_side.png" alt="TechIS" class="h-8">
+            <p class="text-[9px] uppercase font-bold tracking-[0.3em]">Tech X Security Audit v2.0</p>
+        </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/database.js"></script>
     <script src="js/dashboard.js"></script>
-    <script src="js/security.js"></script>
+    <script src="js/loader.js"></script>
 </body>
 </html>
