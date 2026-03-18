@@ -6,428 +6,189 @@
     <link rel="icon" type="image/png" href="imgs/logo_with_border.png">
     <title>Tech X | Administrative Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-      #boothList::-webkit-scrollbar {
-        width: 5px;
-      }
-      #boothList::-webkit-scrollbar-track {
-        background: #0f172a;
-      }
-      #boothList::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 10px;
-      }
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-
-      body {
-        display: flex;
-        flex-direction: column;
-      }
-      main {
-        flex: 1;
-      }
+      #boothList::-webkit-scrollbar { width: 5px; }
+      #boothList::-webkit-scrollbar-track { background: #0f172a; }
+      #boothList::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      body { display: flex; flex-direction: column; min-height: 100-screen; }
+      main { flex: 1; }
+      .tab-btn.active { color: #3b82f6; border-bottom: 2px solid #3b82f6; }
+      .tab-content.hidden { display: none; }
     </style>
   </head>
-  <body class="bg-slate-950 text-white min-h-screen p-4 md:p-8 font-sans">
-    <main class="p-4 md:p-8">
-      <div
-        id="loginSection"
-        class="max-w-md mx-auto mt-20 bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-2xl"
-      >
+  <body class="bg-slate-950 text-white p-4 md:p-8 font-sans">
+    
+    <main class="max-w-7xl mx-auto w-full">
+      <div id="loginSection" class="max-w-md mx-auto mt-20 bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-2xl">
         <div class="text-center mb-8">
-          <h2
-            class="text-3xl font-extrabold text-blue-500 uppercase tracking-widest"
-          >
-            Administrator
-          </h2>
-          <p class="text-slate-400 text-sm">Secure Authentication Portal</p>
+          <h2 class="text-3xl font-extrabold text-blue-500 uppercase tracking-widest">Administrator</h2>
+          <p class="text-slate-400 text-sm font-medium">Secure Access Portal</p>
         </div>
         <div class="space-y-4">
-          <input
-            type="email"
-            id="adminEmail"
-            placeholder="Authorized Email"
-            class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition"
-          />
-          <input
-            type="password"
-            id="adminPass"
-            placeholder="Access Key"
-            class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition"
-          />
-          <button
-            id="loginBtn"
-            class="w-full bg-blue-600 py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg active:scale-95 transition-all"
-          >
-            AUTHENTICATE
-          </button>
+          <input type="email" id="adminEmail" placeholder="Authorized Email" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition" />
+          <input type="password" id="adminPass" placeholder="Access Key" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition" />
+          <button id="loginBtn" class="w-full bg-blue-600 py-4 rounded-xl font-black hover:bg-blue-700 shadow-lg active:scale-95 transition-all uppercase tracking-widest text-xs">Authenticate Session</button>
         </div>
       </div>
 
-      <div id="adminPanel" class="hidden max-w-6xl mx-auto">
-        <div
-          class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4"
-        >
-          <div class="flex items-center gap-4">
-            <img
-              src="imgs/colored_logo.png"
-              alt="Tech X Logo"
-              class="w-12 h-12 object-contain"
-            />
+      <div id="adminPanel" class="hidden">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+          <div class="flex items-center gap-5">
+            <img src="imgs/colored_logo.png" alt="Tech X" class="w-14 h-14 object-contain" />
             <div>
-              <h1
-                class="text-4xl font-black text-white tracking-tighter uppercase"
-              >
-                System <span class="text-blue-500">Overview</span>
-              </h1>
-              <p id="adminStatus" class="text-slate-400 text-sm font-mono"></p>
+              <h1 class="text-4xl font-black text-white tracking-tighter uppercase">System <span class="text-blue-500">Overview</span></h1>
+              <p id="adminStatus" class="text-slate-500 text-[10px] font-mono uppercase tracking-widest mt-1"></p>
             </div>
           </div>
-          <button
-            id="logoutBtn"
-            class="px-6 py-2 bg-slate-800 hover:bg-red-900/30 text-red-400 rounded-full border border-red-900/50 transition font-bold text-xs uppercase tracking-widest"
-          >
-            Terminate Session
-          </button>
-        </div>
+          <button id="logoutBtn" class="px-8 py-3 bg-slate-900 hover:bg-red-950/40 text-red-500 rounded-full border border-red-900/30 transition font-black text-[10px] uppercase tracking-widest">Terminate Session</button>
+        </header>
 
-        <div
-          class="flex border-b border-slate-800 mb-8 gap-6 overflow-x-auto no-scrollbar"
-        >
-          <button
-            onclick="switchTab('analytics')"
-            id="tab-analytics"
-            class="tab-btn pb-4 text-blue-500 border-b-2 border-blue-500 font-bold uppercase text-[10px] tracking-widest whitespace-nowrap"
-          >
-            Data Analytics
-          </button>
-          <button
-            onclick="switchTab('manage')"
-            id="tab-manage"
-            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
-          >
-            System Control
-          </button>
-          <button
-            onclick="switchTab('judges')"
-            id="tab-judges"
-            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
-          >
-            Official Judges
-          </button>
-          <button
-            onclick="switchTab('merit')"
-            id="tab-merit"
-            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
-          >
-            Star Merit Entry
-          </button>
-          <button
-            onclick="switchTab('tabulate')"
-            id="tab-tabulate"
-            class="tab-btn pb-4 text-slate-400 hover:text-white transition uppercase text-[10px] tracking-widest whitespace-nowrap"
-          >
-            Final Tabulations
-          </button>
-        </div>
+        <nav class="flex border-b border-slate-800 mb-10 gap-8 overflow-x-auto no-scrollbar">
+          <button onclick="switchTab('analytics')" id="tab-analytics" class="tab-btn pb-4 active font-black uppercase text-[10px] tracking-[0.2em] whitespace-nowrap transition-all">Data Analytics</button>
+          <button onclick="switchTab('manage')" id="tab-manage" class="tab-btn pb-4 text-slate-500 hover:text-white transition uppercase text-[10px] tracking-[0.2em] whitespace-nowrap">System Control</button>
+          <button onclick="switchTab('judges')" id="tab-judges" class="tab-btn pb-4 text-slate-500 hover:text-white transition uppercase text-[10px] tracking-[0.2em] whitespace-nowrap">Official Judges</button>
+          <button onclick="switchTab('merit')" id="tab-merit" class="tab-btn pb-4 text-slate-500 hover:text-white transition uppercase text-[10px] tracking-[0.2em] whitespace-nowrap">Star Merit Entry</button>
+          <button onclick="switchTab('tabulate')" id="tab-tabulate" class="tab-btn pb-4 text-slate-500 hover:text-white transition uppercase text-[10px] tracking-[0.2em] whitespace-nowrap">Final Tabulations</button>
+        </nav>
 
-        <div id="content-analytics" class="tab-content">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
-              <p
-                class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
-              >
-                Aggregate Digital Votes
-              </p>
-              <h2 id="totalVotesStat" class="text-4xl font-black text-white">
-                0
-              </h2>
+        <section id="content-analytics" class="tab-content">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-xl">
+              <p class="text-slate-500 text-[10px] uppercase font-black tracking-widest mb-2">Total Digital Votes</p>
+              <h2 id="totalVotesStat" class="text-5xl font-black text-white tracking-tighter">0</h2>
             </div>
-            <div
-              class="bg-slate-900 p-6 rounded-xl border border-slate-800 border-l-4 border-l-blue-500"
-            >
-              <p
-                class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
-              >
-                Leading Participant
-              </p>
-              <h2
-                id="leadingSectionStat"
-                class="text-4xl font-black text-blue-500"
-              >
-                --
-              </h2>
+            <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 border-l-4 border-l-blue-600 shadow-xl">
+              <p class="text-slate-500 text-[10px] uppercase font-black tracking-widest mb-2">Cluster A Leader</p>
+              <h2 id="leadingAStat" class="text-3xl font-black text-blue-500 tracking-tighter uppercase">--</h2>
             </div>
-            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
-              <p
-                class="text-slate-400 text-[10px] uppercase font-bold tracking-tighter"
-              >
-                System Audit Entries
-              </p>
-              <h2
-                id="auditEntriesStat"
-                class="text-4xl font-black text-slate-500"
-              >
-                0
-              </h2>
+            <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 border-l-4 border-l-blue-400 shadow-xl">
+              <p class="text-slate-500 text-[10px] uppercase font-black tracking-widest mb-2">Cluster B Leader</p>
+              <h2 id="leadingBStat" class="text-3xl font-black text-blue-400 tracking-tighter uppercase">--</h2>
             </div>
           </div>
-
-          <div
-            class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl"
-          >
-            <div class="p-4 border-b border-slate-800 bg-slate-900/50">
-              <h3
-                class="text-xs font-bold uppercase tracking-widest text-slate-400"
-              >
-                Live Audit Log
-              </h3>
+          
+          <div class="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-slate-800 bg-slate-900/50 flex justify-between items-center">
+              <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Security Transaction Log</h3>
+              <span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
             </div>
-            <div class="overflow-x-auto max-h-96">
+            <div class="overflow-x-auto max-h-[500px]">
               <table class="w-full text-left border-collapse">
-                <thead
-                  class="bg-slate-950 text-slate-500 text-[10px] uppercase font-bold sticky top-0"
-                >
+                <thead class="bg-slate-950 text-slate-500 text-[9px] uppercase font-black sticky top-0">
                   <tr>
-                    <th class="p-4">SR-Code</th>
-                    <th class="p-4">Section</th>
-                    <th class="p-4">Timestamp</th>
-                    <th class="p-4">Network ID</th>
+                    <th class="p-5">Identifier</th>
+                    <th class="p-5">Participant ID</th>
+                    <th class="p-5">Category</th>
+                    <th class="p-5">Network IP</th>
+                    <th class="p-5 text-right">Timestamp</th>
                   </tr>
                 </thead>
-                <tbody
-                  id="auditLogBody"
-                  class="text-xs divide-y divide-slate-800"
-                ></tbody>
+                <tbody id="auditLogBody" class="text-[11px] font-mono divide-y divide-slate-800 text-slate-300"></tbody>
               </table>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div id="content-manage" class="tab-content hidden">
-          <div class="grid lg:grid-cols-2 gap-8">
-            <div
-              class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl"
-            >
-              <h3
-                class="text-lg font-bold mb-6 flex items-center gap-2 uppercase tracking-tight"
-              >
-                <span class="w-1.5 h-5 bg-green-500 rounded-full"></span>
-                Section Management
+        <section id="content-manage" class="tab-content hidden">
+          <div class="grid lg:grid-cols-2 gap-10">
+            <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-xl">
+              <h3 class="text-xl font-black mb-8 uppercase tracking-tight flex items-center gap-3">
+                <span class="w-2 h-6 bg-green-500 rounded-full"></span> Participant Registry
               </h3>
-              <div class="flex gap-2 mb-6">
-                <input
-                  type="text"
-                  id="newBoothName"
-                  placeholder="Section Identifier (e.g. 2201)"
-                  class="flex-1 p-3 rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-green-600 outline-none transition text-white text-sm"
-                />
-                <button
-                  id="addBoothBtn"
-                  class="bg-green-600 px-6 rounded-lg font-bold hover:bg-green-700 active:scale-90 transition"
-                >
-                  ADD
-                </button>
-              </div>
-              <div
-                class="text-[10px] text-slate-500 mb-2 uppercase font-bold tracking-widest"
-              >
-                Registered Sections
-              </div>
-              <ul
-                id="boothList"
-                class="space-y-2 max-h-80 overflow-y-auto pr-2"
-              ></ul>
-            </div>
-
-            <div
-              class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl"
-            >
-              <h3
-                class="text-lg font-bold mb-6 flex items-center gap-2 text-red-500 uppercase tracking-tight"
-              >
-                <span class="w-1.5 h-5 bg-red-500 rounded-full"></span> Access
-                Restriction
-              </h3>
-              <p
-                class="text-slate-500 text-[10px] mb-4 font-bold uppercase italic"
-              >
-                Note: 2nd Year (24-) prefixes are automatically restricted.
-              </p>
-              <textarea
-                id="blacklistInput"
-                placeholder="Enter specific SR-Codes to restrict (one per line)"
-                class="w-full h-40 p-4 rounded-xl bg-slate-800 border border-slate-700 text-sm font-mono mb-4 focus:ring-2 focus:ring-red-600 outline-none transition text-white"
-              ></textarea>
-              <button
-                id="uploadBlacklistBtn"
-                class="w-full bg-slate-100 text-slate-900 py-3 rounded-lg font-black hover:bg-white active:scale-95 transition-all shadow-lg uppercase text-xs tracking-widest"
-              >
-                Synchronize Restrictions
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div id="content-judges" class="tab-content hidden">
-          <div class="max-w-2xl mx-auto">
-            <div
-              class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl"
-            >
-              <div class="flex items-center gap-4 mb-8">
-                <div class="p-3 bg-blue-600/20 rounded-2xl">
-                  <svg
-                    class="w-6 h-6 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="text-xl font-black uppercase tracking-tight">
-                    Judge Panel
-                  </h3>
-                  <p class="text-slate-500 text-xs font-bold uppercase">
-                    Manage official event evaluators
-                  </p>
+              <div class="space-y-4 mb-8">
+                <input type="text" id="newBoothName" placeholder="Section Code (e.g. 2301)" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-green-600 transition text-sm" />
+                <input type="text" id="newProjectName" placeholder="Project Title" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-green-600 transition text-sm" />
+                <div class="flex gap-4">
+                  <select id="newCluster" class="flex-1 p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-green-600 transition text-sm font-bold uppercase tracking-widest">
+                    <option value="A">Cluster A</option>
+                    <option value="B">Cluster B</option>
+                  </select>
+                  <button id="addBoothBtn" class="bg-green-600 px-10 rounded-xl font-black hover:bg-green-700 active:scale-95 transition uppercase text-[10px] tracking-[0.2em]">Add Entry</button>
                 </div>
               </div>
+              <p class="text-[10px] text-slate-600 mb-4 uppercase font-black tracking-widest">Active Database Records</p>
+              <ul id="boothList" class="space-y-3 max-h-96 overflow-y-auto pr-3"></ul>
+            </div>
 
-              <div class="grid gap-4 mb-8">
-                <input
-                  type="text"
-                  id="newJudgeName"
-                  placeholder="Judge Full Name (e.g. Dr. Smith)"
-                  class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-blue-600 outline-none transition text-sm"
-                />
-                <input
-                  type="text"
-                  id="newJudgeCode"
-                  placeholder="Secret Access Code (Officer's Only)"
-                  class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-blue-600 outline-none transition text-sm font-mono"
-                />
-                <button
-                  onclick="addJudge()"
-                  class="w-full bg-blue-600 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-blue-700 transition shadow-lg shadow-blue-900/20"
-                >
-                  Register Judge
-                </button>
+            <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-xl">
+              <h3 class="text-xl font-black mb-8 uppercase tracking-tight text-red-500 flex items-center gap-3">
+                <span class="w-2 h-6 bg-red-500 rounded-full"></span> Access Constraints
+              </h3>
+              <div class="bg-red-500/10 border border-red-900/30 p-4 rounded-xl mb-6">
+                <p class="text-red-400 text-[10px] font-black uppercase leading-relaxed">Automatic Guard: All identifiers with '24-' prefix are hardware-blocked by the core validation function.</p>
               </div>
-
-              <div class="space-y-3">
-                <p
-                  class="text-[10px] text-slate-500 uppercase font-black tracking-widest ml-1"
-                >
-                  Active Credentials
-                </p>
-                <ul
-                  id="judgeList"
-                  class="space-y-2 max-h-80 overflow-y-auto pr-2"
-                ></ul>
-              </div>
+              <textarea id="blacklistInput" placeholder="Specific Restricted Identifiers (One per line)" class="w-full h-48 p-5 rounded-2xl bg-slate-800 border border-slate-700 text-xs font-mono mb-6 focus:ring-2 focus:ring-red-600 outline-none transition text-white leading-relaxed"></textarea>
+              <button id="uploadBlacklistBtn" class="w-full bg-white text-slate-950 py-4 rounded-xl font-black hover:bg-slate-200 active:scale-95 transition-all uppercase text-[10px] tracking-[0.3em]">Synchronize Blacklist</button>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div id="content-merit" class="tab-content hidden">
-          <div
-            class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden"
-          >
-            <div
-              class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50"
-            >
-              <h3
-                class="font-bold text-lg uppercase tracking-tight flex items-center gap-2"
-              >
-                <span class="w-1.5 h-5 bg-yellow-500 rounded-full"></span> Booth
-                Merit (Stickers)
-              </h3>
-              <button
-                onclick="saveMeritScores()"
-                class="bg-yellow-600 px-6 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-yellow-500 transition shadow-lg shadow-yellow-900/20"
-              >
-                Commit Star Data
-              </button>
+        <section id="content-judges" class="tab-content hidden">
+          <div class="max-w-3xl mx-auto bg-slate-900 p-10 rounded-3xl border border-slate-800 shadow-2xl">
+            <h3 class="text-2xl font-black uppercase tracking-tight mb-10 text-center">Authorized Evaluator Credentials</h3>
+            <div class="grid md:grid-cols-2 gap-6 mb-10">
+              <input type="text" id="newJudgeName" placeholder="Full Name" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition text-sm" />
+              <input type="text" id="newJudgeCode" placeholder="Secure Access Key" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 outline-none focus:ring-2 focus:ring-blue-600 transition text-sm font-mono" />
             </div>
-            <div
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6"
-              id="meritGrid"
-            ></div>
+            <button onclick="addJudge()" class="w-full bg-blue-600 py-5 rounded-2xl font-black uppercase tracking-[0.2em] hover:bg-blue-700 transition mb-10 shadow-xl shadow-blue-900/20">Authorize New Judge</button>
+            <p class="text-[10px] text-slate-600 mb-4 uppercase font-black tracking-widest">Registered Evaluators</p>
+            <ul id="judgeList" class="space-y-3 max-h-96 overflow-y-auto"></ul>
           </div>
-        </div>
+        </section>
 
-        <div id="content-tabulate" class="tab-content hidden">
-          <div
-            class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl"
-          >
-            <div
-              class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50"
-            >
-              <h3
-                class="font-bold text-lg uppercase tracking-tight flex items-center gap-2"
-              >
-                <span class="w-1.5 h-5 bg-blue-500 rounded-full"></span>
-                Executive Tabulation
+        <section id="content-merit" class="tab-content hidden">
+          <div class="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
+            <div class="p-8 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
+              <h3 class="font-black text-xl uppercase tracking-tight flex items-center gap-3">
+                <span class="w-2 h-6 bg-yellow-500 rounded-full"></span> Star Merit Entry
               </h3>
-              <button
-                onclick="saveJudgeScores()"
-                class="bg-blue-600 px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition"
-              >
-                Update Judge Scores
-              </button>
+              <button onclick="saveMeritScores()" class="bg-yellow-600 px-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-yellow-500 transition shadow-lg shadow-yellow-900/20">Commit Data</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-8" id="meritGrid"></div>
+          </div>
+        </section>
+
+        <section id="content-tabulate" class="tab-content hidden">
+          <div class="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
+            <div class="p-8 border-b border-slate-800 flex justify-between items-center bg-slate-900/30 text-center">
+              <h3 class="font-black text-xl uppercase tracking-tight">Executive Tabulation Records</h3>
+              <div class="flex gap-4">
+                 <button onclick="exportTabulation()" class="bg-slate-800 border border-slate-700 px-6 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-slate-700 transition">Export CSV</button>
+                 <button onclick="calculateFinalScores()" class="bg-blue-600 px-6 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-blue-500 transition shadow-xl shadow-blue-900/20">Recalculate Totals</button>
+              </div>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
-                <thead
-                  class="bg-slate-950 text-slate-500 text-[10px] uppercase font-bold"
-                >
+                <thead class="bg-slate-950 text-slate-500 text-[10px] uppercase font-black">
                   <tr>
-                    <th class="p-4">Section Identifier</th>
-                    <th class="p-4 text-center">Judges (40%)</th>
-                    <th class="p-4 text-center">Stickers (10%)</th>
-                    <th class="p-4 text-center">Digital (50%)</th>
-                    <th class="p-4 text-center bg-blue-900/20">Grand Total</th>
+                    <th class="p-6">Section</th>
+                    <th class="p-6">Cluster</th>
+                    <th class="p-6 text-center">Judges (40%)</th>
+                    <th class="p-6 text-center">Merit (10%)</th>
+                    <th class="p-6 text-center">Digital (50%)</th>
+                    <th class="p-6 text-center bg-blue-900/10 font-black">Final Grade</th>
                   </tr>
                 </thead>
-                <tbody
-                  id="tabulationBody"
-                  class="text-sm divide-y divide-slate-800"
-                ></tbody>
+                <tbody id="tabulationBody" class="text-[12px] divide-y divide-slate-800"></tbody>
               </table>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </main>
 
-<footer class="fixed bottom-0 left-0 w-full bg-slate-950/80 backdrop-blur-md border-t border-slate-900 py-4 flex flex-col items-center justify-center z-50">
-  <img
-    src="imgs/logo_with_name_side.png"
-    alt="Tech X Logo"
-    class="h-10 opacity-50 hover:opacity-100 transition object-contain"
-  />
-</footer>
+    <footer class="mt-20 py-10 flex flex-col items-center justify-center border-t border-slate-900 bg-slate-950">
+      <img src="imgs/logo_with_name_side.png" alt="Tech X" class="h-10 opacity-20 object-contain mb-4" />
+      <p class="text-[9px] text-slate-700 uppercase tracking-[0.5em] font-black">Secure Administration Module &copy; 2026</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script src="js/database.js"></script>
     <script src="js/admin.js"></script>
     <script src="js/loader.js"></script>
