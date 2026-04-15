@@ -13,33 +13,26 @@
         .rank-gold { background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%); }
         .rank-silver { background: linear-gradient(135deg, #c0c0c0 0%, #708090 100%); }
         .rank-bronze { background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%); }
-        
-        #leaderboardGrid {
-            display: grid;
-            /* Auto-fit boxes para swabe ang spacing */
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
-        }
     </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen p-6 font-sans">
-    <div class="max-w-6xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+<body class="bg-slate-950 text-white min-h-screen p-4 font-sans">
+    <div class="w-full mx-auto">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div>
-                <h1 class="text-4xl font-black text-white tracking-tighter uppercase">
+                <h1 class="text-3xl font-black text-white tracking-tighter uppercase">
                     Tech X <span class="text-blue-500">Analytics</span>
                 </h1>
                 <p class="text-slate-500 mt-1 text-[10px] font-bold uppercase tracking-[0.2em]">
-                    Weighted: 40% Judges | 10% Stickers | 50% Digital
+                    Cluster Results | Weighted: 40% Judges | 10% Stickers | 50% Digital
                 </p>
             </div>
             <div class="flex flex-col items-end gap-2">
                 <div class="bg-slate-900 px-5 py-2 rounded-lg border border-slate-800 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3">
-                    Real-time Matrix
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                     </span>
+                    Real-time Matrix
                 </div>
                 <a href="index.html" class="text-slate-600 hover:text-blue-400 text-[9px] uppercase font-bold transition tracking-widest">← Return to Voting</a>
             </div>
@@ -52,8 +45,8 @@
             </div>
         </div>
 
-        <footer class="mt-12 pt-8 border-t border-slate-900 flex justify-between items-center opacity-30">
-            <img src="imgs/logo_with_name_side.png" alt="TechIS" class="h-8">
+        <footer class="mt-6 pt-4 border-t border-slate-900 flex justify-between items-center opacity-30">
+            <img src="imgs/logo_with_name_side.png" alt="TechIS" class="h-6">
             <p class="text-[9px] uppercase font-bold tracking-[0.3em]">Tech X Security Audit v2.0</p>
         </footer>
     </div>
