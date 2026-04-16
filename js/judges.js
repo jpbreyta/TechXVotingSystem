@@ -30,21 +30,33 @@ async function verifyJudge() {
     }
 
     Loader.show();
-    const { data, error } = await window.supabase
-        .from('judges')
-        .select('*')
-        .eq('name', name)
-        .eq('access_code', code)
-        .single();
+    
+    try {
+        const { data, error } = await window.supabase
+            .from('judges')
+            .select('*')
+            .eq('name', name)
+            .eq('access_code', code);
 
-    Loader.hide();
+        Loader.hide();
 
-    if (data) {
-        localStorage.setItem('active_judge', data.name);
-        notyf.success(`Welcome, ${data.name}!`);
-        showPortal(data.name);
-    } else {
-        notyf.error("Invalid Credentials.");
+        if (error) {
+            console.error('Database error:', error);
+            notyf.error("Database Error: " + error.message);
+            return;
+        }
+
+        if (data && data.length > 0) {
+            localStorage.setItem('active_judge', data[0].name);
+            notyf.success(`Welcome, ${data[0].name}!`);
+            showPortal(data[0].name);
+        } else {
+            notyf.error("Invalid Credentials.");
+        }
+    } catch (e) {
+        Loader.hide();
+        console.error('Unexpected error:', e);
+        notyf.error("Error: " + e.message);
     }
 }
 

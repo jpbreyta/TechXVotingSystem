@@ -74,11 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="relative overflow-hidden border ${boxBorder} px-3 py-2 rounded flex items-center justify-between transition-all duration-300 hover:border-slate-600">
                             <div class="flex items-center gap-2">
                                 <p class="text-lg font-black ${rankBg} w-5">#${index + 1}</p>
-                                <span class="text-sm font-black text-white uppercase">${s.section_name}</span>
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-black text-white uppercase">${s.section_name}</span>
+                                    <span class="text-[9px] text-blue-400">${s.project_name || ''}</span>
+                                </div>
                             </div>
                             <div class="text-right">
                                 <p class="text-sm font-black text-blue-500">${s.grandTotal.toFixed(1)}%</p>
                                 <p class="text-[8px] text-slate-500">J:${s.finalJudgePoints.toFixed(1)} D:${s.digitalPoints.toFixed(1)} S:${s.meritPoints}</p>
+                                <p class="text-[8px] text-green-400">Votes: ${s.currentVotes}</p>
                             </div>
                         </div>`;
                 }).join('');

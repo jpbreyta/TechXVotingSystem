@@ -24,4 +24,8 @@ const Loader = {
         if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
     }
 };
-document.addEventListener('DOMContentLoaded', () => Loader.init());
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => Loader.init());
+} else {
+    Loader.init();
+}
