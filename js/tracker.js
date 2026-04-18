@@ -19,7 +19,10 @@ async function loadTabulation() {
 
         return `
             <tr class="hover:bg-slate-800/30 transition">
-                <td class="p-4 font-bold text-blue-400">${b.section_name}</td>
+                <td class="p-4 font-bold text-blue-400">
+                    <div class="text-white text-xs">${b.section_name}</div>
+                    <div class="text-blue-400 text-[10px]">${b.project_name || ''}</div>
+                </td>
                 <td class="p-4 text-center text-slate-300">${digitalScore.toFixed(2)}%</td>
                 <td class="p-4 text-center text-slate-300">${stickerScore.toFixed(2)}%</td>
                 <td class="p-4 text-center font-black text-white bg-blue-900/10">${finalScore}%</td>

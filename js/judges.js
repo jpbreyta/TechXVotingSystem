@@ -105,7 +105,7 @@ async function loadBooths() {
 
     document.getElementById('boothSelect').innerHTML = `
         <option value="">Select a booth...</option>
-        ${pendingBooths.map(b => `<option value="${b.id}">${b.section_name} (Cluster ${b.cluster})</option>`).join('')}
+        ${pendingBooths.map(b => `<option value="${b.id}">${b.section_name} - ${b.project_name || 'No Project Name'} (Cluster ${b.cluster})</option>`).join('')}
     `;
 
     document.getElementById('boothSelectContainer').classList.remove('hidden');
@@ -129,7 +129,7 @@ window.loadSelectedBooth = async () => {
     selectedBoothName = booth.section_name;
 
     document.getElementById('selectedBoothName').innerText = booth.section_name;
-    document.getElementById('selectedBoothInfo').innerText = `Cluster ${booth.cluster} | ID: ${booth.id.split('-')[0]}`;
+    document.getElementById('selectedBoothInfo').innerText = `${booth.project_name || 'No Project Name'} | Cluster ${booth.cluster} | ID: ${booth.id.split('-')[0]}`;
     document.getElementById('gradingForm').classList.remove('hidden');
     document.getElementById('scoringSection').classList.remove('hidden');
     document.getElementById('submitBtn').classList.remove('hidden');

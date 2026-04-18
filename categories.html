@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="imgs/logo_with_border.png">
+    <title>Tech X | Category Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .progress-glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen p-6 font-sans">
+    <div class="w-full mx-auto">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-4xl font-black text-white tracking-tighter uppercase">
+                    Tech X <span class="text-blue-500">Category Results</span>
+                </h1>
+                <p class="text-slate-500 mt-2 text-sm font-bold uppercase tracking-[0.2em]">
+                    Best Presenter (Top 2) vs Best Booth (Pitch 3-5)
+                </p>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+                <div class="bg-slate-900 px-6 py-3 rounded-lg border border-slate-800 text-sm font-bold uppercase tracking-widest flex items-center gap-3">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                    </span>
+                    Real-time Matrix
+                </div>
+                <div class="flex gap-3">
+                    <a href="scores.html" class="text-slate-600 hover:text-blue-400 text-sm uppercase font-bold transition tracking-widest">← Overall Scores</a>
+                    <a href="index.html" class="text-slate-600 hover:text-blue-400 text-sm uppercase font-bold transition tracking-widest">← Voting</a>
+                </div>
+            </div>
+        </header>
+
+        <div id="categoryGrid">
+            <div class="col-span-full flex flex-col items-center justify-center py-20 bg-slate-900/30 rounded-3xl border border-dashed border-slate-800">
+                <div class="w-10 h-10 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+                <p class="text-slate-600 text-[10px] font-bold uppercase tracking-widest">Compiling Data Streams...</p>
+            </div>
+        </div>
+
+        <footer class="mt-6 pt-4 border-t border-slate-900 flex justify-between items-center opacity-30">
+            <img src="imgs/logo_with_name_side.png" alt="TechIS" class="h-6">
+            <p class="text-[9px] uppercase font-bold tracking-[0.3em]">Tech X Security Audit v2.0</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/database.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const categoryGrid = document.getElementById('categoryGrid');
+
+        async function updateCategories() {
+            try {
+                const { data: booths, error: boothsError } = await window.supabase.from('booths').select('*').order('section_name');
+                if (boothsError) {
+                    console.error('Error fetching booths:', boothsError);
+                    return;
+                }
+
+                const { data: votes, error: votesError } = await window.supabase.from('votes').select('booth_id, cluster, category');
+                if (votesError) {
+                    console.error('Error fetching votes:', votesError);
+                    return;
+                }
+
+                if (!booths || !votes) return;
+
+                const voteCounts = { A: { presentation: {}, pitching: {} }, B: { presentation: {}, pitching: {} } };
+                votes.forEach(v => {
+                    if (v.cluster && v.category && voteCounts[v.cluster] && voteCounts[v.cluster][v.category]) {
+                        voteCounts[v.cluster][v.category][v.booth_id] = (voteCounts[v.cluster][v.category][v.booth_id] || 0) + 1;
+                    }
+                });
+
+                const clusterMaxVotes = {
+                    A: {
+                        presentation: Math.max(...Object.values(voteCounts.A.presentation), 0),
+                        pitching: Math.max(...Object.values(voteCounts.A.pitching), 0)
+                    },
+                    B: {
+                        presentation: Math.max(...Object.values(voteCounts.B.presentation), 0),
+                        pitching: Math.max(...Object.values(voteCounts.B.pitching), 0)
+                    }
+                };
+
+                function calculateScores(cluster, category) {
+                    return booths.filter(b => b.cluster === cluster).map(b => {
+                        const currentVotes = voteCounts[cluster][category][b.id] || 0;
+                        const maxInCluster = clusterMaxVotes[cluster][category] || 0;
+                        const totalPoints = maxInCluster > 0 ? (currentVotes / maxInCluster) * 100 : 0;
+                        return { ...b, currentVotes, totalPoints };
+                    }).sort((a, b) => b.totalPoints - a.totalPoints);
+                }
+
+                function renderCategoryResults(clusterData, category, clusterName, colorClass) {
+                    return clusterData.map((s, index) => {
+                        let borderClass = 'border-slate-800 bg-slate-900/40';
+                        let rankColor = 'text-slate-500';
+                        
+                        if (index === 0) {
+                            borderClass = 'border-yellow-500/40 bg-yellow-500/5';
+                            rankColor = 'text-yellow-500';
+                        } else if (index === 1) {
+                            rankColor = 'text-slate-300';
+                        } else if (index === 2) {
+                            rankColor = 'text-orange-400';
+                        }
+
+                        return `
+                            <div class="border ${borderClass} p-4 rounded-lg flex items-center justify-between transition-all duration-300">
+                                <div class="flex items-center gap-3">
+                                    <p class="text-2xl font-black ${rankColor} w-8">#${index + 1}</p>
+                                    <div class="flex flex-col">
+                                        <span class="text-base font-black text-white uppercase">${s.section_name}</span>
+                                        <span class="text-xs text-blue-400">${s.project_name || ''}</span>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-2xl font-black text-white">${s.currentVotes}</p>
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">votes</p>
+                                </div>
+                            </div>`;
+                    }).join('');
+                }
+
+                function calculateJudgeScores(cluster) {
+                    return booths.filter(b => b.cluster === cluster).map(b => {
+                        const judgeScore = parseFloat(b.judge_final_score) || 0;
+                        return { ...b, judgeScore };
+                    }).sort((a, b) => b.judgeScore - a.judgeScore);
+                }
+
+                function renderJudgeResults(clusterData, clusterName, colorClass) {
+                    return clusterData.map((s, index) => {
+                        let borderClass = 'border-slate-800 bg-slate-900/40';
+                        let rankColor = 'text-slate-500';
+                        
+                        if (index === 0) {
+                            borderClass = 'border-yellow-500/40 bg-yellow-500/5';
+                            rankColor = 'text-yellow-500';
+                        } else if (index === 1) {
+                            rankColor = 'text-slate-300';
+                        } else if (index === 2) {
+                            rankColor = 'text-orange-400';
+                        }
+
+                        return `
+                            <div class="border ${borderClass} p-4 rounded-lg flex items-center justify-between transition-all duration-300">
+                                <div class="flex items-center gap-3">
+                                    <p class="text-2xl font-black ${rankColor} w-8">#${index + 1}</p>
+                                    <div class="flex flex-col">
+                                        <span class="text-base font-black text-white uppercase">${s.section_name}</span>
+                                        <span class="text-xs text-blue-400">${s.project_name || ''}</span>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-2xl font-black text-yellow-400">${s.judgeScore.toFixed(1)}</p>
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">judge score</p>
+                                </div>
+                            </div>`;
+                    }).join('');
+                }
+
+                const presA = calculateScores('A', 'presentation');
+                const presB = calculateScores('B', 'presentation');
+                const pitchA = calculateScores('A', 'pitching');
+                const pitchB = calculateScores('B', 'pitching');
+                
+                const judgeA = calculateJudgeScores('A');
+                const judgeB = calculateJudgeScores('B');
+
+                categoryGrid.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div>
+                            <h2 class="text-2xl font-black text-yellow-400 uppercase tracking-tight mb-4 flex items-center gap-3">
+                                <span class="bg-yellow-500/20 text-yellow-400 px-4 py-2 rounded-lg text-lg">Best Presenter</span>
+                                <span class="text-slate-600 text-sm font-normal">(Votes 1-2)</span>
+                            </h2>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold text-yellow-500 mb-3">Cluster A</h3>
+                                <div class="grid grid-cols-1 gap-3">
+                                    ${renderCategoryResults(presA, 'presentation', 'A', 'yellow')}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-yellow-500 mb-3">Cluster B</h3>
+                                <div class="grid grid-cols-1 gap-3">
+                                    ${renderCategoryResults(presB, 'presentation', 'B', 'yellow')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h2 class="text-2xl font-black text-blue-400 uppercase tracking-tight mb-4 flex items-center gap-3">
+                                <span class="bg-blue-500/20 text-blue-400 px-4 py-2 rounded-lg text-lg">Best Booth</span>
+                                <span class="text-slate-600 text-sm font-normal">(Votes 3-5)</span>
+                            </h2>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold text-blue-500 mb-3">Cluster A</h3>
+                                <div class="grid grid-cols-1 gap-3">
+                                    ${renderCategoryResults(pitchA, 'pitching', 'A', 'blue')}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-blue-500 mb-3">Cluster B</h3>
+                                <div class="grid grid-cols-1 gap-3">
+                                    ${renderCategoryResults(pitchB, 'pitching', 'B', 'blue')}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl font-black text-purple-400 uppercase tracking-tight mb-4 flex items-center gap-3">
+                                <span class="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-lg text-lg">Judges Scores</span>
+                                <span class="text-slate-600 text-sm font-normal">(Separate)</span>
+                            </h2>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold text-purple-500 mb-3">Cluster A</h3>
+                                <div class="grid grid-cols-1 gap-3">
+                                    ${renderJudgeResults(judgeA, 'A', 'purple')}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-bold text-purple-500 mb-3">Cluster B</h3>
+                                <div class="grid grid-cols-1 gap-3">
+                                    ${renderJudgeResults(judgeB, 'B', 'purple')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                console.error('Error in updateCategories:', err);
+            }
+        }
+
+        updateCategories().catch(err => console.error('Initial load error:', err));
+
+        const channel = window.supabase.channel('realtime-categories')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'votes' }, () => {
+            console.log('Vote change detected');
+            updateCategories();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'judge_scores' }, () => {
+            console.log('Judge score change detected');
+            updateCategories();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'booths' }, () => {
+            console.log('Booth change detected');
+            updateCategories();
+        })
+        .subscribe((status) => {
+            console.log('Realtime status:', status);
+        });
+
+        setInterval(() => {
+            updateCategories();
+        }, 10000);
+    });
+    </script>
+    <script src="js/loader.js"></script>
+    <script src="js/security.js"></script>
+</body>
+</html>

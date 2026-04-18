@@ -264,10 +264,14 @@ async function loadMeritEntry() {
             }
             return `
                 <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-xl">
-                    <p class="text-[10px] font-black text-slate-500 uppercase mb-4 tracking-widest flex justify-between">
-                        ${b.section_name} <span id="count-${b.id}" class="text-yellow-500">${currentStars}/10</span>
-                    </p>
-                    <div class="flex justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">${starsHTML}</div>
+                    <div class="mb-4">
+                        <p class="text-[10px] font-black text-white uppercase tracking-widest">${b.section_name}</p>
+                        <p class="text-[9px] text-yellow-400 font-bold">${b.project_name || b.booth_name || 'No Project Name'}</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="flex bg-slate-950 p-3 rounded-xl border border-slate-800">${starsHTML}</div>
+                        <span id="count-${b.id}" class="text-yellow-500 font-black">${currentStars}/10</span>
+                    </div>
                     <input type="hidden" id="input-${b.id}" class="merit-input" data-id="${b.id}" value="${currentStars}">
                 </div>`;
         }).join("");

@@ -71,38 +71,57 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     return `
-                        <div class="relative overflow-hidden border ${boxBorder} px-3 py-2 rounded flex items-center justify-between transition-all duration-300 hover:border-slate-600">
-                            <div class="flex items-center gap-2">
-                                <p class="text-lg font-black ${rankBg} w-5">#${index + 1}</p>
+                        <div class="relative overflow-hidden border ${boxBorder} p-4 rounded-lg flex flex-col gap-3 transition-all duration-300 hover:border-slate-600">
+                            <div class="flex items-center gap-3">
+                                <p class="text-2xl font-black ${rankBg} w-8">#${index + 1}</p>
                                 <div class="flex flex-col">
-                                    <span class="text-sm font-black text-white uppercase">${s.section_name}</span>
-                                    <span class="text-[9px] text-blue-400">${s.project_name || ''}</span>
+                                    <span class="text-base font-black text-white uppercase">${s.section_name}</span>
+                                    <span class="text-xs text-blue-400">${s.project_name || ''}</span>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <p class="text-sm font-black text-blue-500">${s.grandTotal.toFixed(1)}%</p>
-                                <p class="text-[8px] text-slate-500">J:${s.finalJudgePoints.toFixed(1)} D:${s.digitalPoints.toFixed(1)} S:${s.meritPoints}</p>
-                                <p class="text-[8px] text-green-400">Votes: ${s.currentVotes}</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex gap-4">
+                                    <div class="bg-slate-800/50 px-3 py-1.5 rounded">
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold">Judge</p>
+                                        <p class="text-lg font-black text-yellow-400">${s.finalJudgePoints.toFixed(1)}</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 px-3 py-1.5 rounded">
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold">Digital</p>
+                                        <p class="text-lg font-black text-blue-400">${s.digitalPoints.toFixed(1)}</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 px-3 py-1.5 rounded">
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold">Stickers</p>
+                                        <p class="text-lg font-black text-green-400">${s.meritPoints}</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 px-3 py-1.5 rounded">
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold">Votes</p>
+                                        <p class="text-lg font-black text-purple-400">${s.currentVotes}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-2xl font-black text-white">${s.grandTotal.toFixed(1)}%</p>
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Total</p>
+                                </div>
                             </div>
                         </div>`;
                 }).join('');
             }
 
             leaderboardGrid.innerHTML = `
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div>
-                        <h2 class="text-lg font-black text-yellow-400 uppercase tracking-tight mb-2 flex items-center gap-2">
-                            <span class="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs">A</span>
+                        <h2 class="text-xl font-black text-yellow-400 uppercase tracking-tight mb-3 flex items-center gap-2">
+                            <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded text-sm">Cluster A</span>
                         </h2>
-                        <div class="grid grid-cols-1 gap-1">
+                        <div class="grid grid-cols-1 gap-3">
                             ${renderCluster(clusterA)}
                         </div>
                     </div>
                     <div>
-                        <h2 class="text-lg font-black text-blue-400 uppercase tracking-tight mb-2 flex items-center gap-2">
-                            <span class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-xs">B</span>
+                        <h2 class="text-xl font-black text-blue-400 uppercase tracking-tight mb-3 flex items-center gap-2">
+                            <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded text-sm">Cluster B</span>
                         </h2>
-                        <div class="grid grid-cols-1 gap-1">
+                        <div class="grid grid-cols-1 gap-3">
                             ${renderCluster(clusterB)}
                         </div>
                     </div>
